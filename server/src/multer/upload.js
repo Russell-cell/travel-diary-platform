@@ -1,4 +1,4 @@
-// 引入配置好的 multerConfig
+// 上传处理工具 引入配置好的 multerConfig
 const singleUploadMiddleware = require('./single-upload-middleware')
 const multiUploadMiddleware = require('./multi-upload-middleware')
 const fs = require('fs')

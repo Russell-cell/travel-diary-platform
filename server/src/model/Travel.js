@@ -1,6 +1,6 @@
 const mongoose = require('../db/mongodb')
 
-// 建立游记表(结构)
+// 建立游记模型
 const TravelScheme = new mongoose.Schema({
   photo: [{ // 游记照片
     uri: String,

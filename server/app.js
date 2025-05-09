@@ -1,3 +1,4 @@
+// 主应用入口文件
 var createError = require('http-errors');
 var express = require("express");
 var path = require('path');

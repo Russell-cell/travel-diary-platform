@@ -1,7 +1,7 @@
 // 引入mongodb
 const mongoose = require('../db/mongodb')
 const bcrypt = require('bcrypt')
-// 建立用户表(结构)
+// 建立用户模型
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
