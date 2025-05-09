@@ -5,7 +5,7 @@ const { User } = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const app = express();
-const SECRET = 'yukun';
+const SECRET = 'memberB';
 app.use(express.json());
 const userController = require('../controllers/UserController')
 // 获取用户信息
