@@ -1,9 +1,12 @@
 export default {
-  pages: ["pages/index/index", "pages/WaterfallPage/WaterfallPage"],
+  pages: [
+    'pages/index/index',
+    'pages/WaterfallPage/WaterfallPage',
+    'pages/TravelPublishPage/TravelPublishPage'
+  ],
   window: {
-    backgroundTextStyle: "light",
-    navigationBarBackgroundColor: "#fff",
-    navigationBarTitleText: "WeChat",
-    navigationBarTextStyle: "black",
+    navigationBarTitleText: '旅行日记平台',
+    navigationBarBackgroundColor: '#ffffff',
+    navigationBarTextStyle: 'black'
   },
 };

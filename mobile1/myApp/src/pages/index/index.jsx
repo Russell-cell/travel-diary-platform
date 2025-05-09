@@ -28,7 +28,16 @@ const Index = () => {
       url: '/pages/WaterfallPage/WaterfallPage'
     }).catch((error) => {
       console.error('页面跳转失败:', error);
-      show({ title: '页面跳转失败，请稍后重试' });
+      show({ title: '页面跳转失败' });
+    });
+  }, [show]);
+
+  const handlePublishNavigate = useCallback(() => {
+    Taro.navigateTo({
+      url: '/pages/TravelPublishPage/TravelPublishPage'
+    }).catch((error) => {
+      console.error('页面跳转失败:', error);
+      show({ title: '页面跳转失败' });
     });
   }, [show]);
 
@@ -52,6 +61,9 @@ const Index = () => {
       </Button>
       <Button className="button" onClick={handleNavigate}>
         查看瀑布流组件
+      </Button>
+      <Button className="button" onClick={handlePublishNavigate}>
+        查看游记发布页
       </Button>
     </View>
   );

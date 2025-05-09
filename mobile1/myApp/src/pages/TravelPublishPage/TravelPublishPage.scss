@@ -1,0 +1,43 @@
+.travel-publish-page {
+  /* 基础样式 */
+  padding: 14px;
+  box-sizing: border-box;
+
+  .publish-form {
+    /* 表单样式 */
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+
+    .form-item {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 8px;
+      }
+
+      input, textarea {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 28px;
+      }
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 20px;
+      background-color: #007AFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 32px;
+      cursor: pointer;
+    }
+  }
+}
