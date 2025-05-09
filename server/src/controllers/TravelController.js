@@ -9,7 +9,7 @@ class TravelController {
       const uploadRes = await uploadMultiPhoto(req, res)
       let travel = await Travel.create({
         userId: req.body.id,
-        nickname: req.body.nickname,
+        nickname: req.body.nickname,  
         userInfo: { nickname: req.body.nickname, avatar: req.body.avatar },
         title: req.body.title,
         content: req.body.content,
