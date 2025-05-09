@@ -41,6 +41,15 @@ const Index = () => {
     });
   }, [show]);
 
+  const handleDetailNavigate = useCallback(() => {
+    Taro.navigateTo({
+      url: '/pages/TravelDetailPage/TravelDetailPage'
+    }).catch((error) => {
+      console.error('页面跳转失败:', error);
+      show({ title: '页面跳转失败' });
+    });
+  }, [show]);
+
   return (
     <View className="wrapper">
       <Image className="logo" src={logo} />
@@ -64,6 +73,9 @@ const Index = () => {
       </Button>
       <Button className="button" onClick={handlePublishNavigate}>
         查看游记发布页
+      </Button>
+      <Button className="button" onClick={handleDetailNavigate}>
+        查看游记详情页
       </Button>
     </View>
   );
