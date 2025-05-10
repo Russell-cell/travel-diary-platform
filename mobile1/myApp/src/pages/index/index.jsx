@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, Button, Image, Input } from "@tarojs/components";
-import { useEnv, useNavigationBar, useModal, useToast } from "taro-hooks";
-import logo from "./hook.png";
+import { View, Text, Input } from "@tarojs/components";
+import { useNavigationBar, useToast } from "taro-hooks";
 import Taro from '@tarojs/taro';
 import WaterfallPage from '../WaterfallPage/WaterfallPage';
 
@@ -10,57 +9,46 @@ import './index.scss'
 const Index = () => {
   const [searchKey, setSearchKey] = useState('');
   const [currentTab, setCurrentTab] = useState('home');
-  const env = useEnv();
-  const { setTitle } = useNavigationBar({ title: "Taro Hooks" });
-  const showModal = useModal({
-    title: "Taro Hooks Canary!",
-    showCancel: false,
-    confirmColor: "#8c2de9",
-    confirmText: "支持一下"
-  });
-  const { show } = useToast({ mask: true });
-
-  const handleModal = useCallback(() => {
-    showModal({ content: "不如给一个star⭐️!" }).then(() => {
-      show({ title: "点击了支持!" });
-    });
-  }, [show, showModal]);
+  const { setTitle } = useNavigationBar({ title: "旅行日记平台" });
+  const { showToast } = useToast({ mask: true, duration: 1500 });
 
   const handleNavigate = useCallback(() => {
     Taro.navigateTo({
       url: '/pages/WaterfallPage/WaterfallPage'
     }).catch((error) => {
       console.error('页面跳转失败:', error);
-      show({ title: '页面跳转失败' });
+      showToast({ title: '页面跳转失败' });
     });
-  }, [show]);
+  }, [showToast]);
 
   const handlePublishNavigate = useCallback(() => {
     Taro.navigateTo({
       url: '/pages/TravelPublishPage/TravelPublishPage'
     }).catch((error) => {
       console.error('页面跳转失败:', error);
-      show({ title: '页面跳转失败' });
+      showToast({ title: '页面跳转失败' });
     });
-  }, [show]);
+  }, [showToast]);
 
+  // 删除未使用的handleDetailNavigate
   const handleDetailNavigate = useCallback(() => {
     Taro.navigateTo({
       url: '/pages/TravelDetailPage/TravelDetailPage'
     }).catch((error) => {
       console.error('页面跳转失败:', error);
-      show({ title: '页面跳转失败' });
+      showToast({ title: '页面跳转失败' });
     });
-  }, [show]);
+  }, [showToast]);
 
+  // 删除未使用的handleMyTravelListNavigate
   const handleMyTravelListNavigate = useCallback(() => {
     Taro.navigateTo({
       url: '/pages/MyTravelList/MyTravelList'
     }).catch((error) => {
       console.error('页面跳转失败:', error);
-      show({ title: '页面跳转失败' });
+      showToast({ title: '页面跳转失败' });
     });
-  }, [show]);
+  }, [showToast]);
 
   return (
     <View className="wrapper">
@@ -83,7 +71,7 @@ const Index = () => {
           className={`tab-item ${currentTab === 'home' ? 'active' : ''}`}
           onClick={() => {
             setCurrentTab('home');
-            Taro.navigateTo({ url: '/pages/index/index' });
+            // 移除冗余的switchTab调用
           }}
         >
           <Text>主界面</Text>
