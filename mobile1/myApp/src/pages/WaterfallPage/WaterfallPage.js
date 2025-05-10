@@ -84,7 +84,7 @@ class WaterfallPage extends Component {
   handleCardClick = (id) => {
     // 跳转到游记详情页，实际开发中应替换为真实路由
     Taro.navigateTo({
-      url: `/pages/TravelDetail/TravelDetail?id=${id}`
+      url: `/pages/TravelDetailPage/TravelDetailPage?id=${id}`
     })
   }
 
