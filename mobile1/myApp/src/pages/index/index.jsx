@@ -1,12 +1,15 @@
-import React, { useCallback } from "react";
-import { View, Text, Button, Image } from "@tarojs/components";
+import React, { useCallback, useState } from "react";
+import { View, Text, Button, Image, Input } from "@tarojs/components";
 import { useEnv, useNavigationBar, useModal, useToast } from "taro-hooks";
 import logo from "./hook.png";
 import Taro from '@tarojs/taro';
+import WaterfallPage from '../WaterfallPage/WaterfallPage';
 
 import './index.scss'
 
 const Index = () => {
+  const [searchKey, setSearchKey] = useState('');
+  const [currentTab, setCurrentTab] = useState('home');
   const env = useEnv();
   const { setTitle } = useNavigationBar({ title: "Taro Hooks" });
   const showModal = useModal({
@@ -50,33 +53,60 @@ const Index = () => {
     });
   }, [show]);
 
+  const handleMyTravelListNavigate = useCallback(() => {
+    Taro.navigateTo({
+      url: '/pages/MyTravelList/MyTravelList'
+    }).catch((error) => {
+      console.error('页面跳转失败:', error);
+      show({ title: '页面跳转失败' });
+    });
+  }, [show]);
+
   return (
     <View className="wrapper">
-      <Image className="logo" src={logo} />
-      <Text className="title">为Taro而设计的Hooks Library</Text>
-      <Text className="desc">
-        目前覆盖70%官方API. 抹平部分API在H5端短板. 提供近40+Hooks!
-        combined with ahook adapter Taro! 更多信息可以查看新版文档: https://next-version-taro-hooks.vercel.app/
-      </Text>
-      <View className="list">
-        <Text className="label">运行环境</Text>
-        <Text className="note">{env}</Text>
+      {/* 搜索栏 */}
+      <View className="search-bar">
+        <Input
+          placeholder="搜索游记..."
+          value={searchKey}
+          onChange={(e) => setSearchKey(e.detail.value)}
+        />
       </View>
-      <Button className="button" onClick={() => setTitle("Taro Hooks Nice!")}>
-        设置标题
-      </Button>
-      <Button className="button" onClick={handleModal}>
-        使用Modal
-      </Button>
-      <Button className="button" onClick={handleNavigate}>
-        查看瀑布流组件
-      </Button>
-      <Button className="button" onClick={handlePublishNavigate}>
-        查看游记发布页
-      </Button>
-      <Button className="button" onClick={handleDetailNavigate}>
-        查看游记详情页
-      </Button>
+      {/* 瀑布流内容 */}
+      <View className="waterfall-content">
+        {/* 假设WaterfallPage组件已实现，此处引入 */}
+        <WaterfallPage searchKey={searchKey} />
+      </View>
+      {/* 底部导航栏 */}
+      <View className="tab-bar">
+        <View
+          className={`tab-item ${currentTab === 'home' ? 'active' : ''}`}
+          onClick={() => {
+            setCurrentTab('home');
+            Taro.navigateTo({ url: '/pages/index/index' });
+          }}
+        >
+          <Text>主界面</Text>
+        </View>
+        <View
+          className={`tab-item ${currentTab === 'publish' ? 'active' : ''}`}
+          onClick={() => {
+            setCurrentTab('publish');
+            Taro.navigateTo({ url: '/pages/TravelPublishPage/TravelPublishPage' });
+          }}
+        >
+          <Text>发布日志</Text>
+        </View>
+        <View
+          className={`tab-item ${currentTab === 'my' ? 'active' : ''}`}
+          onClick={() => {
+            setCurrentTab('my');
+            Taro.navigateTo({ url: '/pages/MyTravelList/MyTravelList' });
+          }}
+        >
+          <Text>我的游记</Text>
+        </View>
+      </View>
     </View>
   );
 };

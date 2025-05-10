@@ -1,0 +1,96 @@
+<view class="container">
+  <!-- 发布入口按钮 -->
+  <button class="publish-btn" bindtap="goToPublish">发布新游记</button>
+
+  <!-- 游记列表 -->
+  <view class="travel-list">
+    <block wx:for="{{travelList}}" wx:key="id">
+      <view class="travel-item">
+        <view class="travel-info">
+          <text class="title">{{item.title}}</text>
+          <view class="status">
+            状态：
+            <text wx:if="{{item.status === 'pending'}}" class="status-pending">待审核</text>
+            <text wx:if="{{item.status === 'approved'}}" class="status-approved">已通过</text>
+            <text wx:if="{{item.status === 'rejected'}}" class="status-rejected">未通过</text>
+          </view>
+          <view wx:if="{{item.status === 'rejected'}}" class="reject-reason">
+            拒绝原因：{{item.rejectReason}}
+          </view>
+        </view>
+        <view class="operation-btns">
+          <!-- 编辑按钮（仅待审核和未通过显示） -->
+          <button wx:if="{{item.status === 'pending' || item.status === 'rejected'}}" class="edit-btn" data-id="{{item.id}}" data-status="{{item.status}}" bindtap="editTravel">编辑</button>
+          <!-- 删除按钮 -->
+          <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteTravel">删除</button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+
+<style>
+  .container {
+    padding: 20rpx;
+  }
+  .publish-btn {
+    margin: 20rpx 0;
+    background: #007aff;
+    color: white;
+  }
+  .travel-list {
+    border-top: 1rpx solid #eee;
+  }
+  .travel-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 20rpx 0;
+    border-bottom: 1rpx solid #eee;
+  }
+  .travel-info {
+    flex: 1;
+  }
+  .title {
+    font-size: 32rpx;
+    font-weight: bold;
+    margin-bottom: 10rpx;
+  }
+  .status {
+    font-size: 28rpx;
+    color: #666;
+  }
+  .status-pending {
+    color: #ff9500;
+  }
+  .status-approved {
+    color: #4cd964;
+  }
+  .status-rejected {
+    color: #ff3b30;
+  }
+  .reject-reason {
+    font-size: 24rpx;
+    color: #ff3b30;
+    margin-top: 5rpx;
+  }
+  .operation-btns {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 20rpx;
+  }
+  .edit-btn,
+  .delete-btn {
+    font-size: 24rpx;
+    padding: 0 20rpx;
+    margin: 5rpx 0;
+  }
+  .edit-btn {
+    background: #007aff;
+    color: white;
+  }
+  .delete-btn {
+    background: #ff3b30;
+    color: white;
+  }
+</style>
