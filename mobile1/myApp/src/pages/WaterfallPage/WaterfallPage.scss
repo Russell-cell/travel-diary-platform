@@ -1,66 +1,84 @@
-.waterfall-page {
+.waterfall-container {
+  display: flex;
+  gap: 14px;
   padding: 14px;
-  box-sizing: border-box;
 }
 
-.search-input {
-  width: 100%;
-  height: 80px;
-  background-color: #f5f5f5;
-  border-radius: 40px;
-  padding: 0 20px;
-  margin-bottom: 20px;
-}
-
-.waterfall-list {
+.column {
   flex: 1;
+  min-width: 0;
 }
 
 .travel-card {
-  margin-bottom: 20px;
-  background-color: white;
+  margin-bottom: 14px;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   overflow: hidden;
 }
 
 .travel-image {
   width: 100%;
-  height: 300px;
+  height: auto;
   object-fit: cover;
 }
 
 .card-content {
-  padding: 20px;
+  padding: 16px;
 }
 
 .title {
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .author-info {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  margin-right: 16px;
 }
 
 .author-name {
-  font-size: 28px;
+  font-size: 14px;
   color: #666;
 }
 
-.loading, .no-more {
+.waterfall-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: min-content;
+  gap: 15px;
+  padding: 10px;
+}
+
+@media (min-width: 1200px) {
+  .waterfall-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .waterfall-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+.error-fallback {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
   text-align: center;
-  font-size: 28px;
-  color: #999;
-  padding: 20px 0;
+  button { margin-top: 10px; }
 }

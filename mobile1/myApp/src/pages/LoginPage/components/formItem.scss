@@ -1,0 +1,48 @@
+.form-item {
+  width: 100%;
+  margin-bottom: 20px;
+
+  &__label {
+    margin-bottom: 8px;
+    
+    .label-text {
+      font-size: 14px;
+      color: #333;
+      
+      .required-asterisk {
+        color: #ee0a24;
+        margin-right: 4px;
+      }
+    }
+  }
+
+  &__control {
+    border: 1px solid #B3BAC1;
+    border-radius: 4px;
+    padding: 0 10px;
+    
+    &.error {
+      border-color: #D52D0B;
+    }
+
+    .form-input {
+      height: 40px;
+      font-size: 14px;
+      color: #333;
+    }
+  }
+
+  &__error {
+    margin-top: 4px;
+    
+    .error-message {
+      color: #D52D0B;
+      font-size: 12px;
+    }
+  }
+}
+
+.placeholder-style {
+  color: #B3BAC1;
+  font-size: 14px;
+}

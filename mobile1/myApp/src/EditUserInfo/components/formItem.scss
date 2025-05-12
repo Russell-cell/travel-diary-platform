@@ -1,0 +1,31 @@
+.form-item {
+  margin-bottom: 20rpx;
+  width: 100%;
+
+  &--border {
+    border-bottom: 1rpx solid #ebedf0;
+    padding-bottom: 20rpx;
+  }
+
+  &__label {
+    margin-bottom: 16rpx;
+    font-size: 28rpx;
+    color: #333;
+    
+    .required-asterisk {
+      color: #ee0a24;
+      margin-right: 8rpx;
+    }
+  }
+
+  &__control {
+    width: 100%;
+  }
+
+  &__error {
+    margin-top: 8rpx;
+    color: #ee0a24;
+    font-size: 24rpx;
+    line-height: 1.4;
+  }
+}

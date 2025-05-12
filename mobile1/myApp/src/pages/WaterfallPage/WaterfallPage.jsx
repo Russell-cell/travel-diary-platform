@@ -1,134 +1,193 @@
-import Taro from '@tarojs/taro'
-import { View, ScrollView, Input, Image } from '@tarojs/components'
-import './WaterfallPage.scss'
-import { Component } from 'react' 
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { debounce } from 'lodash';
+import Taro from '@tarojs/taro';
+import { ScrollView, View, Image, Text, Input, Button } from '@tarojs/components';
+import Card from './Card';
+import Header from './Header';
+import { NGROK_URL } from '../../config/ngrok';
+import { getToken } from '../../util/tokenRelated';
+import './WaterfallPage.scss';
 
-// 模拟接口数据
-const mockApi = {
-  async getTravelNotes(page, keyword = '') {
-    // 模拟请求延迟
-    await new Promise(resolve => setTimeout(resolve, 100));
-    // 模拟返回数据，实际开发中应替换为真实接口
-    return {
-      data: Array.from({ length: 10 }, (_, index) => ({
-        id: page * 10 + index + 1,
-        title: keyword ? `${keyword}的游记${page * 10 + index + 1}` : `游记${page * 10 + index + 1}`,
-        author: {
-          name: keyword ? `${keyword}用户` : `用户${page * 10 + index + 1}`,
-          avatar: 'https://via.placeholder.com/50x50.png?text=Avatar',
-        },
-        images: ['https://via.placeholder.com/300x200.png?text=Travel+Image'],
-      })),
-      hasMore: page < 5
+const WaterfallPage = ({ searchKey }) => {
+  /* const [columns, setColumns] = useState({ left: [], right: [] }); */
+  const columnRefs = [useRef(null), useRef(null)];
+  const componentRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [columns, setColumns] = useState([[], []]);
+  const heightCache = useRef(new Map());
+  const [error, setError] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [noMore, setNoMore] = useState(false);
+  const pageRef = useRef(1);
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      if (isLoading) return;
+      setIsLoading(true);
+      try {
+        // 实际数据加载函数
+        const loadData = async (isRefreshing = false) => {
+          if (isRefreshing) {
+            pageRef.current = 1;
+            setIsSearching(false);
+          }
+          if (isSearching) return;
+          if (isLoading) return;
+          setIsLoading(true);
+          try {
+            const response = await Taro.request({
+              url: `${NGROK_URL}/travels/getTravels`,
+              method: 'GET',
+              data: {
+                page: pageRef.current,
+                pageSize: 10,
+                query: searchText
+              }
+            });
+            const travels = response.data.travels;
+            if (travels.length < 10) setNoMore(true);
+            const newPosts = travels.map(travel => ({
+              id: travel._id,
+              image: travel.photo[0]?.uri || '/images/default.jpg',
+              title: travel.title,
+              author: {
+                name: travel.userInfo.nickname,
+                avatar: travel.userInfo.avatar
+              }
+            }));
+            setColumns(prev => prev.map((col, idx) => {
+              const start = idx * (newPosts.length / 2);
+              return [...col, ...newPosts.slice(start, start + (newPosts.length / 2))];
+            }));
+            if (isRefreshing) setCurrentPage(1);
+            else setCurrentPage(prev => prev + 1);
+            pageRef.current++;
+          } catch (error) {
+            console.error('加载失败:', error);
+            setError(true);
+          } finally {
+            setIsLoading(false);
+            setRefreshing(false);
+          }
+        };
+        
+        const newPosts = mockPosts(currentPage, searchKey);
+        Taro.nextTick(() => {
+          if (!componentRef.current) return;
+          const query = Taro.createSelectorQuery().in(componentRef.current);
+          query.select('.column-0').boundingClientRect()
+          query.select('.column-1').boundingClientRect()
+          query.exec((res) => {
+            // 使用缓存高度计算列总高度
+            const leftTotalHeight = columns[0].reduce((sum, post) => sum + (heightCache.current.get(post.id) || 0), 0);
+            const rightTotalHeight = columns[1].reduce((sum, post) => sum + (heightCache.current.get(post.id) || 0), 0);
+            
+            const sortedPosts = [...newPosts];
+            const newColumns = [[...columns[0]], [...columns[1]]];
+            
+            sortedPosts.forEach(post => {
+              if (leftTotalHeight <= rightTotalHeight) {
+                newColumns[0].push(post);
+              } else {
+                newColumns[1].push(post);
+              }
+            });
+            // 更新新增卡片的高度缓存
+            Taro.nextTick(() => measureElements());
+            
+            setColumns(newColumns);
+          });
+        });
+        setCurrentPage(prev => prev + 1);
+      } catch (error) {
+        console.error('加载游记失败:', error);
+      }
+      setIsLoading(false);
     };
-  }
+    fetchPosts();
+  }, [currentPage, searchKey, isLoading]);
+
+  const measureElements = () => {
+    if (!componentRef.current) return; // 检查组件是否已挂载
+    const query = Taro.createSelectorQuery().in(componentRef.current);
+    // Flatten columns to get all posts in both columns
+    const allPosts = columns.flat();
+    allPosts.forEach(post => {
+      query.select(`#card-${post.id}`).boundingClientRect();
+    });
+    query.exec(res => {
+      res.forEach((rect, index) => {
+        const post = allPosts[index];
+        if (rect && post) { // Add null checks
+          heightCache.current.set(post.id, rect.height);
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    // 响应式布局
+    const handleResize = debounce(() => {
+      Taro.getSystemInfo().then(info => {
+        const screenWidth = info.screenWidth;
+        let columnCount = 2;
+        setColumns(Array.from({length: columnCount}, () => []));
+      });
+    }, 300);
+    handleResize();
+    Taro.onWindowResize(handleResize);
+    return () => Taro.offWindowResize(handleResize);
+  }, [])
+
+  const handleSearch = async () => {
+  setIsSearching(true);
+  pageRef.current = 1;
+  await loadData(true);
+  setIsSearching(false);
 };
 
-// 防抖函数
-function debounce(fn, delay) {
-  let timer = null
-  return function(...args) {
-    if (timer) clearTimeout(timer)
-    timer = setTimeout(() => {
-      fn.apply(this, args)
-    }, delay)
-  }
-}
-
-class WaterfallPage extends Component {
-  state = {
-    travelNotes: [],
-    page: 1,
-    hasMore: true,
-    keyword: '',
-    loading: false
-  }
-
-  componentDidMount() {
-    this.loadData()
-  }
-
-  // 加载数据
-  loadData = async (isRefresh = false) => {
-    if (this.state.loading || !this.state.hasMore) return
-    
-    this.setState({ loading: true })
-    
-    const { page, keyword } = this.state
-    const newPage = isRefresh ? 1 : page
-    
-    try {
-      const res = await mockApi.getTravelNotes(newPage, keyword)
-      
-      this.setState(prevState => ({
-        travelNotes: isRefresh ? res.data : [...prevState.travelNotes, ...res.data],
-        page: newPage + 1,
-        hasMore: res.hasMore,
-        loading: false
-      }))
-    } catch (error) {
-      console.error('加载数据失败:', error)
-      this.setState({ loading: false })
+const handleScroll = useCallback(debounce((e) => {
+    const scrollTop = e.detail.scrollTop;
+    const scrollHeight = e.detail.scrollHeight;
+    const clientHeight = e.detail.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight - 200 && !isLoading) {
+      setCurrentPage(prev => prev + 1);
     }
-  }
+  }, 300), [isLoading]);
 
-  // 处理搜索输入
-  handleSearchInput = debounce(function (e) {
-    const keyword = e.detail.value
-    this.setState({ keyword }, () => {
-      this.loadData(true)
-    })
-  }, 500).bind(this)
 
-  // 处理卡片点击
-  handleCardClick = (id) => {
-    // 跳转到游记详情页，实际开发中应替换为真实路由
-    Taro.navigateTo({
-      url: `/pages/TravelDetailPage/TravelDetailPage?id=${id}`
-    })
-  }
 
-  render() {
-    const { travelNotes, loading, hasMore } = this.state
-    
-    return (
-      <View className='waterfall-page'>
-        {/* 搜索框 */}
-        <Input
-          className='search-input'
-          placeholder='搜索游记标题或作者昵称'
-          onInput={this.handleSearchInput}
-        />
-        
-        {/* 瀑布流列表 */}
-        <ScrollView
-          className='waterfall-list'
-          scrollY
-          onReachBottom={this.loadData}
-        >
-          {travelNotes.map(note => (
-            <View
-              key={note.id}
-              className='travel-card'
-              onClick={() => this.handleCardClick(note.id)}
-            >
-              <Image src={note.images[0]} className='travel-image' />
-              <View className='card-content'>
-                <View className='title'>{note.title}</View>
-                <View className='author-info'>
-                  <Image src={note.author.avatar} className='avatar' />
-                  <View className='author-name'>{note.author.name}</View>
-                </View>
-              </View>
-            </View>
-          ))}
-          
-          {loading && <View className='loading'>加载中...</View>}
-          {!hasMore && <View className='no-more'>没有更多数据了</View>}
-        </ScrollView>
+  return (
+    <ScrollView ref={componentRef} className="waterfall-container" onScroll={handleScroll} scrollY>
+      <Header 
+  searchText={searchText} 
+  setSearchText={(e) => setSearchText(e.detail.value)} 
+  handleSearch={handleSearch} 
+/>
+<View className="waterfall-grid">
+        {columns?.map((column, columnIndex) => (
+          <View key={`column-${columnIndex}`} className={`column-${columnIndex}`}>
+            {column.map(post => (
+              <Card
+                key={post.id}
+                item={{...post, id: post.id, image: post.image, title: post.title, author: { avatar: post.author.avatar, name: post.author.name }}}
+            />
+            ))}
+          </View>
+        ))}
       </View>
-    )
-  }
-}
+      {error && 
+        <View className="error-fallback">
+          <Text>内容加载失败，请检查网络连接</Text>
+          <Button onClick={() => setCurrentPage(1)}>重试</Button>
+        </View>}
+      {isLoading && <View className="loading-mask">加载中...</View>}
+    </ScrollView>
+  );
+};
 
-export default WaterfallPage
+
+export default WaterfallPage;

@@ -6,6 +6,7 @@
 2. 分页加载，每次加载10条审核通过的游记数据。
 3. 页面顶部搜索框，支持通过游记标题和作者昵称进行搜索，使用防抖处理优化搜索性能。
 4. 点击游记卡片可跳转至对应游记详情页。
+5. 两栏不对齐瀑布流布局，列间距14px，卡片高度自适应，通过CSS多列布局实现视觉多样性。
 
 ## 页面结构
 ```
@@ -190,14 +191,19 @@ export default WaterfallPage
 }
 
 .waterfall-list {
-  flex: 1;
+  column-count: 2;          // 两列布局
+  column-gap: 14px;         // 列间距14px
+  padding: 0 14px;         // 配合外层容器内边距
 }
 
 .travel-card {
-  margin-bottom: 20px;
+  margin-bottom: 14px;      // 调整卡片垂直间距与列间距一致
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  break-inside: avoid;      // 防止多列布局中卡片被截断
+  display: inline-block;   // 配合多列布局的块级展示
+  width: 100%;             // 确保卡片宽度占满列宽
   overflow: hidden;
 }
 

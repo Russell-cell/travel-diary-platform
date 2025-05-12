@@ -1,0 +1,140 @@
+// styles/register.scss
+
+/* 全局变量 */
+$primary-color: #2196F3;    // 主色调
+$error-color: #ff4444;      // 错误提示色
+$border-radius: 8px;        // 统一圆角
+$spacing-unit: 16px;        // 基础间距单位
+$transition-duration: 0.3s; // 动画时长
+
+/* 容器布局 */
+.register-container {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+  padding: $spacing-unit * 2;
+
+  .header {
+    margin-bottom: $spacing-unit * 3;
+    
+    .back-btn {
+      transition: opacity $transition-duration;
+      &:active {
+        opacity: 0.7;
+      }
+    }
+
+    .title {
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+      &::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: $primary-color;
+        margin: $spacing-unit auto 0;
+      }
+    }
+  }
+}
+
+/* 表单元素 */
+.form-item {
+  margin-bottom: $spacing-unit * 2;
+
+  .form-label {
+    font-weight: 600;
+    margin-bottom: $spacing-unit;
+    display: flex;
+    align-items: center;
+
+    .required-asterisk {
+      color: $error-color;
+      margin-right: 4px;
+    }
+  }
+
+  .form-control {
+    border: 2px solid #dee2e6;
+    border-radius: $border-radius;
+    padding: $spacing-unit;
+    transition: border-color $transition-duration;
+
+    &.error {
+      border-color: $error-color;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    .form-input {
+      font-size: 16px;
+      &::placeholder {
+        color: #adb5bd;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .error-message {
+    color: $error-color;
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all $transition-duration;
+    
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* 头像上传 */
+.avatar-upload {
+  margin: $spacing-unit * 2 0;
+  
+  .upload-container {
+    border: 2px dashed #ced4da;
+    transition: all $transition-duration;
+    
+    &:active {
+      transform: scale(0.98);
+    }
+
+    .placeholder {
+      font-size: 48px;
+      color: #adb5bd;
+      transition: transform 0.2s;
+    }
+
+    .preview-image {
+      object-fit: cover;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+  }
+}
+
+/* 注册按钮 */
+.submit-btn {
+  background: linear-gradient(45deg, $primary-color, darken($primary-color, 10%));
+  letter-spacing: 1px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+  transition: all $transition-duration;
+  
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.2);
+  }
+  
+  &[disabled] {
+    opacity: 0.65;
+    filter: grayscale(0.5);
+  }
+}
+
+/* 动画效果 */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

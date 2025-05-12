@@ -1,0 +1,5 @@
+<template name="tmpl_0_div">
+  <view class="common-div">
+    <slot />
+  </view>
+</template>

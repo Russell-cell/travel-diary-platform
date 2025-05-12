@@ -1,0 +1,44 @@
+.header-aboveAll {
+  display: flex;
+  flex-direction: row;
+  margin-right: 16px;
+  margin-top: 16px;
+  height: 45px;
+}
+
+.header-avatarMenu {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.header-searchBar {
+  flex: 3;
+}
+
+.header-textInput {
+  height: 35px;
+  width: 260px;
+  border-color: #2196F3;
+  border-width: 1px;
+  padding-left: 10px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.header-buttonContainer {
+  flex: 1;
+}
+
+.header-button {
+  background-color: #2196F3;
+  height: 35px;
+  border-radius: 20px;
+  border-color: #2196F3;
+}
+
+.header-button text {
+  font-size: 18px;
+  color: white;
+}

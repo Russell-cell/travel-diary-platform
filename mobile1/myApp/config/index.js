@@ -35,7 +35,8 @@ export default defineConfig(async (merge, { command, mode }) => {
         pxtransform: {
           enable: true,
           config: {
-
+            designWidth: 750,
+            platform: 'weapp'
           }
         },
         cssModules: {
@@ -56,6 +57,12 @@ export default defineConfig(async (merge, { command, mode }) => {
         chunkFilename: 'css/[name].[chunkhash].css'
       },
       postcss: {
+        pxtransform: {
+          enable: true,
+          config: {
+            designWidth: 750
+          }
+        },
         autoprefixer: {
           enable: true,
           config: {}
@@ -72,8 +79,14 @@ export default defineConfig(async (merge, { command, mode }) => {
     rn: {
       appName: 'taroDemo',
       postcss: {
+        pxtransform: {
+          enable: true,
+          config: {
+            designWidth: 750
+          }
+        },
         cssModules: {
-          enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
+          enable: false
         }
       }
     }

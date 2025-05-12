@@ -1,102 +1,94 @@
-import React, { useCallback, useState } from "react";
-import { View, Text, Input } from "@tarojs/components";
-import { useNavigationBar, useToast } from "taro-hooks";
-import Taro from '@tarojs/taro';
-import WaterfallPage from '../WaterfallPage/WaterfallPage';
-
+// 新增依赖导入
+import { getCurrentInstance } from '@tarojs/runtime'
+import { Current, Component } from '@tarojs/taro'
 import './index.scss'
 
-const Index = () => {
-  const [searchKey, setSearchKey] = useState('');
-  const [currentTab, setCurrentTab] = useState('home');
-  const { setTitle } = useNavigationBar({ title: "旅行日记平台" });
-  const { showToast } = useToast({ mask: true, duration: 1500 });
+// 增强路由配置
+const routeMap = new Map([
+  ['Login', '/pages/Login/index'],
+  ['Register', '/pages/Register/index'],
+  ['Main', '/pages/Main/index'],
+  ['Detail', '/pages/Detail/index'],
+  ['EditTravel', '/pages/EditTravel/index'],
+  ['EditUserInfo', '/pages/EditUserInfo/index']
+])
 
-  const handleNavigate = useCallback(() => {
-    Taro.navigateTo({
-      url: '/pages/WaterfallPage/WaterfallPage'
-    }).catch((error) => {
-      console.error('页面跳转失败:', error);
-      showToast({ title: '页面跳转失败' });
-    });
-  }, [showToast]);
+// 扩展导航方法
+const enhancedNavigateTo = (routeName, params) => {
+  const path = routeMap.get(routeName)
+  if (!path) {
+    console.error(`路由${routeName}未注册`)
+    return
+  }
+  
+  // 多端参数序列化
+  const query = new URLSearchParams(params).toString()
+  Taro.navigateTo({
+    url: `${path}${query ? `?${query}` : ''}`,
+    success: () => {
+      // 同步页面栈状态
+      Current.router?.onShow?.()
+    }
+  })
+}
 
-  const handlePublishNavigate = useCallback(() => {
-    Taro.navigateTo({
-      url: '/pages/TravelPublishPage/TravelPublishPage'
-    }).catch((error) => {
-      console.error('页面跳转失败:', error);
-      showToast({ title: '页面跳转失败' });
-    });
-  }, [showToast]);
+class App extends Component {
+  // 新增生命周期
+  componentDidMount() {
+    this.initNavigation()
+  }
 
-  // 删除未使用的handleDetailNavigate
-  const handleDetailNavigate = useCallback(() => {
-    Taro.navigateTo({
-      url: '/pages/TravelDetailPage/TravelDetailPage'
-    }).catch((error) => {
-      console.error('页面跳转失败:', error);
-      showToast({ title: '页面跳转失败' });
-    });
-  }, [showToast]);
+  // 初始化导航状态
+  initNavigation = () => {
+    const { path } = getCurrentInstance().router || {}
+    if (path) {
+      // 同步当前路由状态
+      const [routeName] = [...routeMap.entries()]
+        .find(([_, value]) => value === path) || []
+      this.setState({ currentRoute: routeName })
+    }
+  }
 
-  // 删除未使用的handleMyTravelListNavigate
-  const handleMyTravelListNavigate = useCallback(() => {
-    Taro.navigateTo({
-      url: '/pages/MyTravelList/MyTravelList'
-    }).catch((error) => {
-      console.error('页面跳转失败:', error);
-      showToast({ title: '页面跳转失败' });
-    });
-  }, [showToast]);
+  // 增强路由跳转（支持页面通信）
+  navigateTo = (routeName, params) => {
+    this.showToast('info', '导航中...')
+    enhancedNavigateTo(routeName, params)
+  }
 
-  return (
-    <View className="wrapper">
-      {/* 搜索栏 */}
-      <View className="search-bar">
-        <Input
-          placeholder="搜索游记..."
-          value={searchKey}
-          onChange={(e) => setSearchKey(e.detail.value)}
+  render() {
+    return (
+      <View className='app-container'>
+        {/* 安全区域适配 */}
+        <View className='safe-area-top' />
+        
+        <View className='route-view'>
+          {Object.entries(routes).map(([name, config]) => (
+            <config.screen
+              key={name}
+              navigation={{
+                navigate: this.navigateTo,
+                state: { 
+                  routeName: name,
+                  params: Current.router?.params // 注入当前路由参数
+                }
+              }}
+              route={{
+                ...config.navigationOptions,
+                // 同步页面元信息
+                path: routeMap.get(name),
+                scene: Current.router?.scene
+              }}
+            />
+          ))}
+        </View>
+
+        {/* 增强Toast交互 */}
+        <AtToast
+          {...this.state.toastConfig}
+          hasMask={false}
+          onClick={() => this.setState({ toastConfig: { visible: false }})}
         />
       </View>
-      {/* 瀑布流内容 */}
-      <View className="waterfall-content">
-        {/* 假设WaterfallPage组件已实现，此处引入 */}
-        <WaterfallPage searchKey={searchKey} />
-      </View>
-      {/* 底部导航栏 */}
-      <View className="tab-bar">
-        <View
-          className={`tab-item ${currentTab === 'home' ? 'active' : ''}`}
-          onClick={() => {
-            setCurrentTab('home');
-            // 移除冗余的switchTab调用
-          }}
-        >
-          <Text>主界面</Text>
-        </View>
-        <View
-          className={`tab-item ${currentTab === 'publish' ? 'active' : ''}`}
-          onClick={() => {
-            setCurrentTab('publish');
-            Taro.navigateTo({ url: '/pages/TravelPublishPage/TravelPublishPage' });
-          }}
-        >
-          <Text>发布日志</Text>
-        </View>
-        <View
-          className={`tab-item ${currentTab === 'my' ? 'active' : ''}`}
-          onClick={() => {
-            setCurrentTab('my');
-            Taro.navigateTo({ url: '/pages/MyTravelList/MyTravelList' });
-          }}
-        >
-          <Text>我的游记</Text>
-        </View>
-      </View>
-    </View>
-  );
-};
-
-export default Index;
+    )
+  }
+}
