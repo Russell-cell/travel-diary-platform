@@ -5,7 +5,7 @@ const { User } = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const app = express();
-const SECRET = 'memberB';
+const SECRET = 'wufan';
 app.use(express.json());
 const userController = require('../controllers/UserController')
 // 获取用户信息
@@ -31,7 +31,7 @@ UsersRouter.post('/login', async (req, res) => {
         if (!!isValid) {
           const token = jwt.sign({
             id: String(user._id),
-          }, SECRET, { expiresIn: "0.5d" }) // 设置token失效时间为半天
+          }, SECRET, { expiresIn: "7d" }) // 设置token失效时间为半天
           res.header("Authorization", token)  // token放在请求头中
           res.send({
             message: "登录成功",
@@ -51,11 +51,14 @@ UsersRouter.post('/login', async (req, res) => {
 const auth = async (req, res, next) => {
   try {
     console.log(req.headers.token)
+    console.log("UsersRouter验证token:", req.headers.token ? "存在" : "不存在");
     const { id } = jwt.verify(req.headers.token, SECRET);  // 这个操作需要时间
     req.user = await User.findById(id, { username: 1, avatar: 1, nickname: 1 });
     next();
   } catch (e) {
-    next();
+    // next();
+    console.error("UsersRouter token验证失败:", e.message);
+    return res.status(401).send({ message: "token过期了~" });
   }
 }
 

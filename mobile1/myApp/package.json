@@ -10,6 +10,7 @@
     "framework": "React"
   },
   "scripts": {
+    "start": "npm run dev:weapp",
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
@@ -47,7 +48,7 @@
     "@tarojs/plugin-platform-qq": "4.0.12",
     "@tarojs/plugin-platform-swan": "4.0.12",
     "@tarojs/plugin-platform-tt": "4.0.12",
-    "@tarojs/plugin-platform-weapp": "4.0.12",
+    "@tarojs/plugin-platform-weapp": "^4.0.12",
     "@tarojs/react": "4.0.12",
     "@tarojs/runtime": "4.0.12",
     "@tarojs/shared": "4.0.12",

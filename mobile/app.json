@@ -1,0 +1,71 @@
+{
+  "expo": {
+    "name": "duruo_travels",
+    "slug": "duruo-travels",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "androidStatusBar": {
+      "backgroundColor": "#ffffff",
+      "translucent": false,
+      "barStyle": "dark-content"
+    },
+    "icon": "./assets/my_icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/home_background.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.ycy.travel",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.ycy.travel",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/my_icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "output": "static",
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      ["expo-build-properties", {
+        "android": {
+          "usesCleartextTraffic": true
+        }
+      }],
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a4bb2070-605c-4fc2-a432-27494489f04d"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a4bb2070-605c-4fc2-a432-27494489f04d"
+    },
+    "owner": "duruo"
+  }
+}

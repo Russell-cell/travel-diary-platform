@@ -32,3 +32,49 @@
 .view-actions.two{
   justify-content: space-between;
 }
+
+/* 视频相关样式 */
+.video-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.video-thumbnail {
+  position: relative;
+  display: inline-block;
+}
+
+.video-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-play-icon svg {
+  font-size: 24px;
+  color: white;
+}
+
+.video-duration {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.video-link {
+  margin-top: 10px;
+  display: inline-block;
+}

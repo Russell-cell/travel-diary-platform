@@ -43,12 +43,27 @@ class UserController {
   }
   async register(req, res) {
     try {
+      // 设置默认头像路径
+      let avatarUrl = "/public/avatarUploads/default_avatar.png";
+      
+      // 只有当上传了文件时才尝试处理头像
+      if (req.file) {
+        try {
+          const uploadRes = await uploadAvatar(req, res);
+          if (uploadRes && uploadRes.img_url) {
+            avatarUrl = uploadRes.img_url;
+          }
+        } catch (e) {
+          console.error("头像上传失败:", e);
+          // 失败时继续使用默认头像，无需中断注册流程
+        }
+      }
       const uploadRes = await uploadAvatar(req, res);  //上传头像
       let user = await User.create({
         username: req.body.username,
         nickname: req.body.nickname,
         password: req.body.password,
-        avatar: uploadRes.img_url
+        avatar: avatarUrl
       })
       await user.save();
       res.send("注册成功");
@@ -56,8 +71,12 @@ class UserController {
     catch (e) {
       if (e.message === 'File too large') {
         res.send({ message: "头像图片超出2M的限制" });
+      } else if (e.code === 11000) {
+        // MongoDB 重复键错误代码是 11000
+        res.send({ message: "用户名已存在" });
       } else {
-        res.send({ message: "用户名已存在" })
+        // 其他错误类型
+        res.send({ message: "注册失败: " + e.message });
       }
     }
   }

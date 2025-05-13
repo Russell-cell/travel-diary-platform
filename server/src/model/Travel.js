@@ -7,6 +7,13 @@ const TravelScheme = new mongoose.Schema({
     height: Number,
     width: Number
   }],
+  videos: [{
+    uri: String,
+    duration: Number,
+    thumbnail: String,// 视频缩略图
+    height: Number,
+    width: Number
+  }],
   title: String, // 游记标题
   content: {  // 游记内容
     type: String,

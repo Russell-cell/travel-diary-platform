@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { View, Input, Textarea, Image, Button } from '@tarojs/components'
 import Compressor from 'compressorjs'
 import './TravelPublishPage.scss'
-import { Component } from 'react' 
+import { Component } from 'react'
 
 class TravelPublishPage extends Component {
   state = {
@@ -40,7 +40,7 @@ class TravelPublishPage extends Component {
     })
 
     const compressedImages = await Promise.all(
-      tempFilePaths.map(filePath => 
+      tempFilePaths.map(filePath =>
         new Promise((resolve) => {
           new Compressor(Taro.getFileSystemManager().readFileSync(filePath), {
             quality: 60,
@@ -56,7 +56,7 @@ class TravelPublishPage extends Component {
       )
     )
 
-    this.setState(prevState => ({ 
+    this.setState(prevState => ({
       images: [...prevState.images, ...compressedImages]
     }))
   }
@@ -101,25 +101,25 @@ class TravelPublishPage extends Component {
 
   render() {
     const { title, content, images, video, error } = this.state
-    
+
     return (
       <View className='travel-publish-page'>
         {error && <View className='error-message'>{error}</View>}
-        
+
         <Input
           className='title-input'
           placeholder='请输入标题'
           value={title}
           onChange={this.handleTitleChange}
         />
-        
+
         <Textarea
           className='content-textarea'
           placeholder='请输入内容'
           value={content}
           onChange={this.handleContentChange}
         />
-        
+
         <View className='upload-section'>
           <Button onClick={this.handleImageUpload}>上传图片</Button>
           <View className='image-preview'>
@@ -127,11 +127,11 @@ class TravelPublishPage extends Component {
               <Image key={index} src={image} className='preview-image' />
             ))}
           </View>
-        
+
           <Button onClick={this.handleVideoUpload}>上传视频</Button>
           {video && <View>视频已选择: {video}</View>}
         </View>
-        
+
         <Button className='submit-button' onClick={this.handleSubmit}>发布</Button>
         <Button className='jump-button' onClick={() => {
           Taro.navigateTo({

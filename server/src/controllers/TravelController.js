@@ -6,27 +6,51 @@ class TravelController {
   // 游记信息图片+标题+内容+地点 上传
   async upload(req, res) {
     try {
-      const uploadRes = await uploadMultiPhoto(req, res)
+      const uploadRes = await uploadMultiPhoto(req, res);
+      
+      // 验证必填项
+      if (!req.body.title || !req.body.title.trim()) {
+        return res.status(400).send({ message: "请填写标题" });
+      }
+      
+      if (!req.body.content || !req.body.content.trim()) {
+        return res.status(400).send({ message: "请填写游记内容" });
+      }
+      
+      // 确保至少有一张图片
+      if (!uploadRes.photos || uploadRes.photos.length === 0) {
+        return res.status(400).send({ message: "请至少上传一张图片" });
+      }
+      
       let travel = await Travel.create({
         userId: req.body.id,
         nickname: req.body.nickname,  
-        userInfo: { nickname: req.body.nickname, avatar: req.body.avatar },
+        userInfo: { 
+          nickname: req.body.nickname, 
+          avatar: req.body.avatar 
+        },
         title: req.body.title,
         content: req.body.content,
         travelState: req.body.travelState,
-        photo: uploadRes,
+        photo: uploadRes.photos || [],
+        videos: uploadRes.videos || [], // 添加视频数组
         location: {
-          country: req.body.country,
-          province: req.body.province,
-          city: req.body.city
+          country: req.body.country || "",
+          province: req.body.province || "",
+          city: req.body.city || ""
         },
-        collectedCount: req.body.collectedCount,
-        collectedCount: req.body.likedCount,
-      })
-      await travel.save();  // 更新文档
-      res.send({ message: "上传成功" });
+        collectedCount: req.body.collectedCount || 0,
+        likedCount: req.body.likedCount || 0,
+      });
+      
+      await travel.save();
+      res.send({ message: "上传成功", travelId: travel._id });
     } catch (error) {
-      res.send("上传失败")
+      console.error("游记上传失败:", error);
+      res.status(500).send({ 
+        message: "上传失败", 
+        error: error.message
+      });
     }
   }
   // mobile---分页获取获取所有游记信息(用于首页展示) 
@@ -74,7 +98,7 @@ class TravelController {
   // mobile--- 由用户的token获取获取用户发布的游记(用于我的游记), travelState为3和4的不返回
   async getMyTravels(req, res) {
     try {
-      const MyTravels = await Travel.find({ userId: req.user._id, travelState: { $nin: [3, 4] } }, '_id photo title content travelState location rejectedReason').sort({ travelState: -1, _id: -1 }).exec();
+      const MyTravels = await Travel.find({ userId: req.user._id, travelState: { $nin: [3, 4] } }, '_id photo title content travelState location rejectedReason videos').sort({ travelState: -1, _id: -1 }).exec();
       if (MyTravels) {
         res.send({
           message: "获取我的游记成功",
@@ -91,21 +115,52 @@ class TravelController {
   }
   async updateOneTravel(req, res) {
     try {
-      const uploadRes = await uploadMultiPhoto(req, res)  // 上传新添加的图片
-      const newPhotoArray = JSON.parse(req.body.photo)
+      const uploadRes = await uploadMultiPhoto(req, res);
+      console.log("更新上传结果:", uploadRes);
+      // 验证必填项
+      if (!req.body.title || !req.body.title.trim()) {
+        return res.status(400).send({ message: "请填写标题" });
+      }
+      
+      if (!req.body.content || !req.body.content.trim()) {
+        return res.status(400).send({ message: "请填写游记内容" });
+      }
+      
+      // 解析现有照片数据
+      const newPhotoArray = JSON.parse(req.body.photo || '{"photodata":[]}');
+      
+      // 解析现有视频数据
+      const newVideoArray = JSON.parse(req.body.videos || '{"videodata":[]}');
+      
+      // 确保合并后至少有一张图片
+      const combinedPhotos = [...newPhotoArray.photodata, ...(uploadRes.photos || [])];
+      if (combinedPhotos.length === 0) {
+        return res.status(400).send({ message: "请至少上传一张图片" });
+      }
+      
+      // 合并旧有和新上传的视频，限制只保留一个
+      const combinedVideos = [
+        ...(newVideoArray.videodata || []),
+        ...(uploadRes.videos || [])
+      ].slice(0, 1); // 只保留第一个视频
+      
       await Travel.findOneAndUpdate({ _id: req.body.id }, {
         $set: {
           title: req.body.title,
           content: req.body.content,
-          location: JSON.parse(req.body.location),
-          photo: [...newPhotoArray.photodata, ...uploadRes],
+          location: JSON.parse(req.body.location || '{"country":"","province":"","city":""}'),
+          photo: [...newPhotoArray.photodata, ...(uploadRes.photos || [])],
+          videos: combinedVideos, // 确保使用正确的字段名 videos
           travelState: 2, // 游记状态改为待审核
-          rejectedReason: "" // 清空拒绝原因
+          rejectedReason: "", // 清空拒绝原因
+          updateTime: new Date()
         }
-      })
+      });
+      
       res.send({ message: "更新成功" });
-    } catch (e) {
-      console.log("更新失败")
+    } catch (error) {
+      console.error("游记更新失败:", error);
+      res.status(500).send({ message: "更新失败", error: error.message });
     }
   }
   async getCollectedTravels(req, res) {
@@ -144,7 +199,7 @@ class TravelController {
   }
   async getDraftTravels(req, res) {
     try {
-      const MyTravels = await Travel.find({ userId: req.user._id, travelState: { $eq: 4 } }, '_id photo title content travelState location').sort({ travelState: -1, _id: -1 }).exec();
+      const MyTravels = await Travel.find({ userId: req.user._id, travelState: { $eq: 4 } }, '_id photo title content travelState location videos').sort({ travelState: -1, _id: -1 }).exec();
       if (MyTravels) {
         res.send({
           message: "获取我的游记成功",

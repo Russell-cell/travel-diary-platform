@@ -10,13 +10,14 @@ import {
   Button,
   Flex,
   Avatar,
-  Space
+  Space,
+  Divider
 } from "antd";
 import { useEffect, useState } from "react";
 import { request } from "@/utils";
 import classNames from "classnames"
 import "./index.scss";
-import { EnvironmentOutlined } from "@ant-design/icons"
+import { EnvironmentOutlined,VideoCameraOutlined } from "@ant-design/icons"
 
 const { Paragraph } = Typography;
 
@@ -106,6 +107,43 @@ const Detail = ({ noteId, view, onSubmit, onCancel }) => {
                </Flex>
             }
           </Image.PreviewGroup>
+          
+                    {/* 添加视频显示 */}
+                    {info.videos && info.videos.length > 0 && (
+            <>
+              <Divider orientation="left">视频</Divider>
+              <Flex wrap="wrap" gap="middle">
+                {info.videos.map((item, index) => (
+                  <div key={index} className="video-container">
+                    {item.thumbnail ? (
+                      <div className="video-thumbnail">
+                        <a href={item.uri} target="_blank" rel="noopener noreferrer">
+                          <Image
+                            height={200}
+                            src={item.thumbnail}
+                            preview={false}
+                          />
+                          <div className="video-play-icon">
+                            <VideoCameraOutlined />
+                          </div>
+                        </a>
+                        <div className="video-duration">
+                          {Math.floor(item.duration / 60)}:{String(Math.floor(item.duration % 60)).padStart(2, '0')}
+                        </div>
+                      </div>
+                    ) : (
+                      <a href={item.uri} target="_blank" rel="noopener noreferrer" className="video-link">
+                        <Button icon={<VideoCameraOutlined />} type="primary">
+                          播放视频
+                        </Button>
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </Flex>
+            </>
+          )}
+
           <Paragraph>
             <blockquote>
               <div className="travel-content" dangerouslySetInnerHTML={{ __html: info.content }}></div>

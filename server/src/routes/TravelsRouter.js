@@ -4,17 +4,21 @@ const { Travel } = require('../model/Travel');
 const { User } = require('../model/User');
 var TravelsRouter = express.Router();
 const jwt = require("jsonwebtoken");
-const SECRET = 'yukun';
+const SECRET = 'wufan';
 const travelController = require('../controllers/TravelController')
 
 // mobile---一个中间件,用于验证token
 const auth = async (req, res, next) => {
   try {
     // console.log(req.headers.token)
+    // console.log("验证token:", req.headers.token ? "存在" : "不存在");
+    
     const { id } = jwt.verify(req.headers.token, SECRET);  // 这个操作需要时间
     req.user = await User.findById(id, { username: 1, avatar: 1, nickname: 1 });
+    // console.log("token验证成功, 用户ID:", id);
     next();
   } catch (e) {
+    // console.error("token验证失败:", e.message);
     return res.send({ message: "token过期了~" });
     // next();
   }
