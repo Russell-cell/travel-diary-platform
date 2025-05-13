@@ -4,8 +4,8 @@ import axios from "axios";
 const request = axios.create({
   // baseURL: 'http://5fvskc9y2ble.xiaomiqiu.com',
   // baseURL: 'http://localhost:3000',
-  // baseURL: 'http://192.168.171.218:3000'
-  baseURL: 'https://tnz8cosav4bj.ngrok.xiaomiqiu123.top',
+  baseURL: 'http://192.168.171.218:3000',
+  // baseURL: 'https://tnz8cosav4bj.ngrok.xiaomiqiu123.top',
   timeout: 5000
 })
 

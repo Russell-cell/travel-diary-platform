@@ -74,7 +74,7 @@ export default editTravelScreen = ({ route }) => {
       // 设置视频URI
       setVideo(videoItem.uri);
       // 设置视频缩略图
-      setVideoThumbnail(videoItem.thumbnail || videoItem.uri);
+      setVideoThumbnail(videoItem.thumbnail);
       // 保存完整视频对象
       setVideoData(videoItem);
       
@@ -429,15 +429,7 @@ export default editTravelScreen = ({ route }) => {
                 useNativeControls
                 resizeMode="cover"
                 isLooping={false}
-                onError={(error) => {
-                  console.error("视频加载错误:", error);
-                  // 显示错误信息
-                  Alert.alert(
-                    "视频加载错误", 
-                    "无法加载视频，请检查网络连接或重新上传",
-                    [{ text: "确定" }]
-                  );
-                }}
+                onError={(error) => console.error("视频加载错误:", error)}
                 posterSource={{ uri: videoThumbnail }}
                 posterStyle={{ width: '100%', height: '100%' }}
                 onLoad={() => console.log("视频加载成功")}

@@ -229,7 +229,7 @@ async function uploadMultiPhoto(req, res) {
                 height: height
               });
               
-            } else if (file.mimetype.startsWith('videos/')) {
+            } else if (file.mimetype.startsWith('video/')) {
               // 检查是否已有视频
               videoCount++;
               if (videoCount > 1) {
