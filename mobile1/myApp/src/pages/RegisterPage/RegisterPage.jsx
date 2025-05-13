@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import FormItem from './components/formItem';
 import LoadingOverlay from '../../components/LoadingOverlay';
-import { AntDesign, Ionicons } from '@taro-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const RegisterScreen = () => {
   const [passwordValue, setPasswordValue] = useState('');

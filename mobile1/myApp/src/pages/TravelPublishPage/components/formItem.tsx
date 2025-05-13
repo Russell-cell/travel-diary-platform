@@ -17,7 +17,7 @@ type FormItemProps<T extends FieldValues, TName extends FieldPath<T>> = {
   labelStyle?: React.CSSProperties
 } & ControllerProps<T, TName> &
   UseControllerProps<T, TName> &
-  { render: (props: ControllerRenderProps<T, TName>) => React.ReactElement | null }
+  { render: (props: ControllerRenderProps<T, TName>) => React.ReactElement }
 
 const FormItem = <T extends FieldValues, TName extends FieldPath<T>>(
   props: FormItemProps<T, TName>

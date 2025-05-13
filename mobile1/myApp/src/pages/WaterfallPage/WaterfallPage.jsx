@@ -4,8 +4,8 @@ import Taro from '@tarojs/taro';
 import { ScrollView, View, Image, Text, Input, Button } from '@tarojs/components';
 import Card from './Card';
 import Header from './Header';
-import { NGROK_URL } from '../../config/ngrok';
-import { getToken } from '../../util/tokenRelated';
+import { NGROK_URL } from '../../../config/ngrok';
+import { getToken } from '../../utils/tokenRelated';
 import './WaterfallPage.scss';
 
 const WaterfallPage = ({ searchKey }) => {

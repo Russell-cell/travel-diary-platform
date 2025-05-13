@@ -4,11 +4,11 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../../redux/userSlice'
-import { NGROK_URL } from '../../config/ngrok'
-import { getToken } from '../../util/tokenRelated'
+import { NGROK_URL } from '../../../config/ngrok'
+import { getToken } from '../../utils/tokenRelated'
 import FormItem from './components/formItem'
-import eyeOpen from '../../../assets/eye-open.png'
-import eyeClose from '../../../assets/eye-close.png'
+import eyeOpen from '../../../public/eye-open.png' // 确保路径正确
+import eyeClose from '../../../public/eye-close.png'
 import './LoginPage.scss'
 
 export default function LoginScreen() {

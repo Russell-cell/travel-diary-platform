@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form'
 import { useSelector } from '@tarojs/redux'
 import axios from 'axios'
 import { NGROK_URL } from '../../config/ngrok'
-import FormItem from '../../components/formItem'
+import FormItem from './components/formItem.tsx';
 import LoadingOverlay from '../components/LoadingOverlay'
-import placeList from '../Page/TravelPublishPage/placeList'
+import placeList from '../pages/TravelPublishPage/placeList';
 import './EditTravel.scss'
 
 const EditTravelScreen = () => {

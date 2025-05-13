@@ -1,0 +1,52 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.logo-img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.title-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.tab-bar {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  background-color: #f8f8f8;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tab-item.active {
+  color: #1890ff;
+}
+
+.tab-icon {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.tab-text {
+  font-size: 12px;
+}

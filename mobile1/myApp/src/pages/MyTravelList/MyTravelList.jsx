@@ -5,9 +5,9 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
   import { Menu, Divider } from 'react-native-paper';
   import { useSelector, useDispatch } from 'react-redux';
   import { clearUser } from '../../redux/userSlice';
-  import { getToken, removeToken } from '../../util/tokenRelated';
+  import { getToken, removeToken } from '../../utils/tokenRelated';
   import MyTravelCard from './components/MyTravelCard'    //我的游记卡片组件
-  import { NGROK_URL } from '../../config/ngrok'
+  import { NGROK_URL } from '../../../config/ngrok'
   import LoadingOverlay from '../../components/LoadingOverlay';
   import { Foundation } from '@expo/vector-icons';
   import { Tabs } from 'react-native-collapsible-tab-view'

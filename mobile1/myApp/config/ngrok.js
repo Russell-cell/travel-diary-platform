@@ -1,0 +1,1 @@
+export const NGROK_URL = 'https://tnz8cosav4bj.ngrok.xiaomiqiu123.top'; // 请替换为实际的ngrok服务地址

@@ -1,5 +1,4 @@
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {storeToken, getToken, removeToken} from './tokenRelated'
 
 // Add a request interceptor 请求拦截器

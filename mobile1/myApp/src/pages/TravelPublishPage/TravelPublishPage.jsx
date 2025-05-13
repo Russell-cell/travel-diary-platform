@@ -6,17 +6,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image
+  Image,
+  Button
 } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
-import Button from 'apsl-react-native-button';
 import FormItem from './components/formItem';
 import UnLoginScreen from '../../components/unLogin';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { NGROK_URL } from '../../config/ngrok';
-import '../../util/axios.config';
+import { NGROK_URL } from '../../../config/ngrok';
+import '../../utils/axios.config';
 import { useSelector, useDispatch } from 'react-redux';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import { Picker } from '@react-native-picker/picker';

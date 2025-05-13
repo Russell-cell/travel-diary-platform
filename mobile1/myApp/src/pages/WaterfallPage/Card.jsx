@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import MyDialog from '../../components/myDialog';
 import { setUser } from '../../redux/userSlice';
-import { getToken } from '../../util/tokenRelated';
+import { getToken } from '../../utils/tokenRelated';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 

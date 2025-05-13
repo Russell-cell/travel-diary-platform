@@ -1,16 +1,67 @@
-// 新增依赖导入
+import Taro from '@tarojs/taro'
 import { getCurrentInstance } from '@tarojs/runtime'
-import { Current, Component } from '@tarojs/taro'
+import { Current } from '@tarojs/runtime'
+import { Component } from 'react' // 从react导入Component[7](@ref)
+import { View } from '@tarojs/components'
+import { AtToast } from 'taro-ui'
 import './index.scss'
 
+// 导入页面组件
+import LoginPage from '../LoginPage/LoginPage'
+import RegisterScreen from '../RegisterPage/RegisterPage'
+import MainPage from '../main'
+import DetailPage from '../TravelDetailPage/TravelDetailPage'
+import EditTravelPage from '../../EditTravel/EditTravel'
+import EditUserInfoPage from '../../EditUserInfo/EditUserInfo'
+
 // 增强路由配置
+// 路由配置对象
+const routes = {
+  Login: {
+    screen: LoginPage,
+    navigationOptions: {
+      title: '登录'
+    }
+  },
+  Register: {
+    screen: RegisterScreen,
+    navigationOptions: {
+      title: '注册'
+    }
+  },
+  Main: {
+    screen: MainPage,
+    navigationOptions: {
+      title: '主页'
+    }
+  },
+  Detail: {
+    screen: DetailPage,
+    navigationOptions: {
+      title: '详情'
+    }
+  },
+  EditTravel: {
+    screen: EditTravelPage,
+    navigationOptions: {
+      title: '编辑游记'
+    }
+  },
+  EditUserInfo: {
+    screen: EditUserInfoPage,
+    navigationOptions: {
+      title: '编辑资料'
+    }
+  }
+}
+
 const routeMap = new Map([
-  ['Login', '/pages/Login/index'],
-  ['Register', '/pages/Register/index'],
-  ['Main', '/pages/Main/index'],
-  ['Detail', '/pages/Detail/index'],
-  ['EditTravel', '/pages/EditTravel/index'],
-  ['EditUserInfo', '/pages/EditUserInfo/index']
+  ['LoginPage', '/pages/LoginPage/LoginPage'],
+  ['RegisterPage', '/pages/RegisterPage/RegisterPage'],
+  ['Main', '/pages/main'],
+  ['TravelDetailPage', '/pages/TravelDetailPage/TravelDetailPage'],
+  ['EditTravel', '/EditTravel/EditTravel'],
+  ['EditUserInfo', '/EditUserInfo/EditUserInfo']
 ])
 
 // 扩展导航方法
