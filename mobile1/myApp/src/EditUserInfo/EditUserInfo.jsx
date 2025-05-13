@@ -4,10 +4,9 @@ import { useDispatch, useSelector } from '@tarojs/redux'
 import { useForm } from 'react-hook-form'
 import { AtInput, AtTextarea, AtMessage } from 'taro-ui'
 import FormItem from './components/formItem'
-import LoadingOverlay from '../../components/LoadingOverlay'
+import LoadingOverlay from '../components/LoadingOverlay'
 import axios from 'axios'
 import { NGROK_URL } from '../../config/ngrok'
-import './editUserInfo.scss'
 
 const EditUserInfoScreen = () => {
   const [height, setHeight] = useState(80)

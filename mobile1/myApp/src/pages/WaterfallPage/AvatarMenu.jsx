@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Taro from '@tarojs/taro';
 import { View, Image, Button, Modal } from '@tarojs/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUser } from '../../../redux/userSlice';
-import { removeToken } from '../../../util/tokenRelated';
+import { clearUser } from '../../redux/userSlice';
+import { removeToken } from '../../util/tokenRelated';
 import './AvatarMenu.scss';
 
 const AvatarMenu = () => {

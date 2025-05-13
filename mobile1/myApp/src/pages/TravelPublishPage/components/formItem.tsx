@@ -16,7 +16,8 @@ type FormItemProps<T extends FieldValues, TName extends FieldPath<T>> = {
   style?: React.CSSProperties
   labelStyle?: React.CSSProperties
 } & ControllerProps<T, TName> &
-  UseControllerProps<T, TName>
+  UseControllerProps<T, TName> &
+  { render: (props: ControllerRenderProps<T, TName>) => React.ReactElement | null }
 
 const FormItem = <T extends FieldValues, TName extends FieldPath<T>>(
   props: FormItemProps<T, TName>
@@ -60,7 +61,7 @@ const FormItem = <T extends FieldValues, TName extends FieldPath<T>>(
           
           return render({
             ...restField, // 保留未冲突的属性
-            value: field.value as T[FieldPath<T>], // 必要类型断言
+            value: field.value as T[TName], // 修正类型断言为具体泛型参数
             onChange: (e: unknown) => handleChange(e, field),
             onBlur: field.onBlur
           })

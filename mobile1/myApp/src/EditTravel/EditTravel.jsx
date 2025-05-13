@@ -6,9 +6,9 @@ import { useSelector } from '@tarojs/redux'
 import axios from 'axios'
 import { NGROK_URL } from '../../config/ngrok'
 import FormItem from '../../components/formItem'
-import LoadingOverlay from '../../components/LoadingOverlay'
-import placeList from '../addTravels/placeList'
-import './editTravel.scss'
+import LoadingOverlay from '../components/LoadingOverlay'
+import placeList from '../Page/TravelPublishPage/placeList'
+import './EditTravel.scss'
 
 const EditTravelScreen = () => {
   const { params } = useRouter()
