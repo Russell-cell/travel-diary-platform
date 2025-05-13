@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const SECRET = 'wufan';
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const userController = require('../controllers/UserController')
 // 获取用户信息
 UsersRouter.get('/', (req, res) => {

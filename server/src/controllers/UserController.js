@@ -43,21 +43,35 @@ class UserController {
   }
   async register(req, res) {
     try {
-      const uploadRes = await uploadAvatar(req, res);  //上传头像
+      console.log(req.body);
+  
+      let uploadRes = null;
+      try {
+        // 尝试上传头像
+        uploadRes = await uploadAvatar(req, res);
+      } catch (err) {
+        // 如果上传失败，不抛出异常，使用默认头像
+        console.log("未上传头像或头像上传失败，使用默认头像");
+      }
+  
+      let avatarUrl = uploadRes && uploadRes.img_url
+        ? uploadRes.img_url
+        : 'http://192.168.171.218:3000/public/avatarUploads/default_avatar.png'; // 替换成你的默认头像地址
+  
       let user = await User.create({
         username: req.body.username,
         nickname: req.body.nickname,
         password: req.body.password,
-        avatar: uploadRes.img_url
-      })
+        avatar: avatarUrl,
+      });
+  
       await user.save();
       res.send("注册成功");
-    }
-    catch (e) {
+    } catch (e) {
       if (e.message === 'File too large') {
         res.send({ message: "头像图片超出2M的限制" });
       } else {
-        res.send({ message: "用户名已存在" })
+        res.send({ message: "用户名已存在" });
       }
     }
   }

@@ -141,6 +141,19 @@ function uploadAvatar(req, res) {
         reject(err) // 传递的图片格式错误或者超出文件限制大小，就会reject出去
       } else {
         console.log("图片上传成功");
+        
+        // 检查是否有文件上传
+        if (!req.file) {
+          console.log("没有上传头像文件，将使用默认头像");
+          // 返回默认头像URL
+          resolve({
+            id: req.body.username,
+            img_url: BaseURL + imgPath_avatar + "default_avatar.png"
+          });
+          return;
+        }
+        
+        // 有文件上传的情况，继续原来的处理逻辑
         // hanldeImgDelAndRename(req.body.username, req.file.filename, handlePath('../../public/avatarUploads')); // 对图片进行去重删除和重命名
         const img = req.file.filename.split('.') // 拼接成完整的服务器静态资源图片路径
         resolve({
@@ -149,8 +162,7 @@ function uploadAvatar(req, res) {
           img_url: BaseURL + imgPath_avatar + img[0] + '.' + img[1]
         })
       }
-    }
-    )
+    })
   })
 }
 // 封装上传单图片的接口

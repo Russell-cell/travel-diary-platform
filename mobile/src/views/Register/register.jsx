@@ -76,55 +76,47 @@ export default function RegisterScreen() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-    if (!!file.file) {  // 当存在头像文件的时候执行下面的
-      const params = new FormData();
-      delete data.passwordsure   // 删除‘确认密码’
-      data = { ...file, ...data }
-      for (let i in data) {
-        params.append(i, data[i]);
-      };
-      await axios.post(NGROK_URL + '/users/register', params, {
-        headers: {
-          'Content-Type': 'multipart/form-data' // 告诉后端，有文件上传
-        }
-      }).then(
-        res => {
-          setIsLoading(false);
-          if (res.data === "注册成功") {
-            Toast.show({
-              type: 'success',
-              text1: res.data,
-              position: 'top',
-              autoHide: true,
-              visibilityTime: 1000,
-            })
-            navigation.navigate('登录界面');
-          } else {
-            Toast.show({
-              type: 'error',
-              text1: res.data.message,
-              position: 'top',
-              autoHide: true,
-              visibilityTime: 1000,
-            })
-          }
-        }
-      ).catch(
-        err => {
-          console.log(err);
-          setIsLoading(false);
-        }
-      )
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: "您还没有上传头像哦~",
-        position: 'top',
-        autoHide: true,
-        visibilityTime: 1000,
-      })
-      setIsLoading(false);
+    const params = new FormData();
+    delete data.passwordsure;
+  
+    // 添加字段
+    for (let key in data) {
+      params.append(key, data[key]);
     }
+  
+    // 如果用户上传了头像则附加
+    if (!!file.file) {
+      params.append('file', file.file);
+    }
+  
+    await axios.post(NGROK_URL + '/users/register', params, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(res => {
+      setIsLoading(false);
+      if (res.data === "注册成功") {
+        Toast.show({
+          type: 'success',
+          text1: res.data,
+          position: 'top',
+          autoHide: true,
+          visibilityTime: 1000,
+        });
+        navigation.navigate('登录界面');
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res.data.message,
+          position: 'top',
+          autoHide: true,
+          visibilityTime: 1000,
+        });
+      }
+    }).catch(err => {
+      console.log(err);
+      setIsLoading(false);
+    });
   };
 
   return (
