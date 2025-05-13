@@ -49,7 +49,7 @@ const AvatarMenu = () => {
       {/* 菜单栏选项根据有无用户信息动态调整 */}
       {userInfo.id ? (
         <>
-          <Menu.Item title="逛一逛" leadingIcon="home-outline" onPress={() => { navigation.navigate('首页'); closeMenu(); }} />
+          <Menu.Item title="首页" leadingIcon="home-outline" onPress={() => { navigation.navigate('首页'); closeMenu(); }} />
           <Divider />
           <Menu.Item title="修改信息" leadingIcon="account-details-outline" onPress={() => { navigation.navigate('修改用户信息'); closeMenu(); }} />
           <Divider />
@@ -237,7 +237,7 @@ const FourthRoute = ({ draftTravels, fetchTravels, isLoading }) => {
       />
     ))
   ) : (
-    !isLoading && <View style={{ padding: 20 }}><Text style={{ fontSize: 18 }}>您的草稿箱是空的哦~</Text></View>
+    !isLoading && <View style={{ padding: 20 }}><Text style={{ fontSize: 18 }}>您的草稿箱为空</Text></View>
   );
   return (
     <View style={[styles.scene]}>

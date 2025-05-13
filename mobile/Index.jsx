@@ -9,6 +9,7 @@ import RegisterScreen from './src/views/Register/register'
 import DetailScreen from './src/views/Detail/detail'
 import editTravelScreen from './src/views/EditTravel/editTravel'
 import EditUserInfoScreen from './src/views/EditUserInfo/editUserInfo';
+import MyTravelsScreen from './src/views/MyTravels/myTravels';
 import Toast, { BaseToast } from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
@@ -50,6 +51,7 @@ export default function App() {
           <Stack.Screen name="登录界面" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="注册界面" component={RegisterScreen} options={{ headerShown: false }} />
           <Stack.Screen name="主界面" component={MainScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="我的游记" component={MyTravelsScreen} />
           <Stack.Screen name="Detail" component={DetailScreen} options={{
             headerTitle: '',
           }} />
