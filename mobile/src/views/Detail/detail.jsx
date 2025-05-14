@@ -92,7 +92,7 @@ const DetailScreen = ({ navigation, route }) => {
 
   const handleShare = () => {
     // 分享功能
-    const uri = `【${userInfo.nickname}】给您分享了一篇游记,快来看看吧~\n https://tnz8cosav4bj.ngrok.xiaomiqiu123.top/public/share/index.html?id=${cardId}`;
+    const uri = `【${userInfo.nickname}】给您分享了一篇游记,快来看看吧~\n http://192.168.171.218:3000/public/share/index.html?id=${cardId}`;
     Share.share({
       message: uri,
     }, {

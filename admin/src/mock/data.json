@@ -3,8 +3,8 @@
     {
       "user_id": 1,
       "username": "管理员",
-      "account": "admin",
-      "password": "123123",
+      "account": "guanliyuan",
+      "password": "guanliyuan123",
       "type": "管理员",
       "type_id": 1,
       "id": "e6c5",
@@ -13,8 +13,8 @@
     {
       "user_id": 2,
       "username": "审核人员",
-      "account": "audit",
-      "password": "111111",
+      "account": "shenhe",
+      "password": "shenhe123",
       "type": "审核人员",
       "type_id": 2,
       "id": "b8dc",

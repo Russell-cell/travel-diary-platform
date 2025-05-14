@@ -29,7 +29,7 @@ const Login = () => {
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="账号:admin/audit"
+              placeholder="账号:guanliyuan/shenhe"
             />
           </Form.Item>
           <Form.Item

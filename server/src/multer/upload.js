@@ -3,6 +3,7 @@ const singleUploadMiddleware = require('./single-upload-middleware')
 const multiUploadMiddleware = require('./multi-upload-middleware')
 const fs = require('fs')
 const BaseURL = 'http://192.168.171.218:3000' // 本地开发环境
+// const BaseURL = 'https://tnz8cosav4bj.ngrok.xiaomiqiu123.top' // 本地开发环境
 const imgPath_photo = '/public/photos/'
 const imgPath_avatar = '/public/avatarUploads/'
 const videoPath = '/public/videos/'
