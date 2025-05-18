@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 const userController = require('../controllers/UserController')
 // 获取用户信息
 UsersRouter.get('/', (req, res) => {
-  console.log('req对象')
+  console.log('req对象',res.query)
 })
 
 // 登录接口
@@ -19,7 +19,7 @@ UsersRouter.post('/login', async (req, res) => {
   const user = await User.findOne({
     username: req.body.username
   }, { username: 1, password: 1, avatar: 1, nickname: 1 })
-  // 这里真滴搞，不加{password：1}获取的文档(document)里面居然都没有password一项，怕不是被默认不返回了？
+  
   if (!user) {
     return res.send({
       message: "用户名不存在"
@@ -32,7 +32,7 @@ UsersRouter.post('/login', async (req, res) => {
         if (!!isValid) {
           const token = jwt.sign({
             id: String(user._id),
-          }, SECRET, { expiresIn: "7d" }) // 设置token失效时间为半天
+          }, SECRET, { expiresIn: "7d" }) // 设置token失效时间为7天
           res.header("Authorization", token)  // token放在请求头中
           res.send({
             message: "登录成功",

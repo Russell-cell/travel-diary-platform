@@ -33,7 +33,7 @@ function getProfileAPI(){
 // 删除游记mock数据
 function delNoteAPI(id){
   return axios({ 
-    url:`http://localhost:3004/noteList/${id}`,
+    url:`http://192.168.171.218:3004/noteList/${id}`,
     method: 'delete'
   })
 }

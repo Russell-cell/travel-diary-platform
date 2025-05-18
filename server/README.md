@@ -12,7 +12,7 @@
 
 1. 进入项目目录`cd server`
 2. 安装依赖`npm install`
-3. 启动项目`npm run start`
+3. 启动项目`npm run start`或`yarn start`
 
 ## API 接口文档
 
