@@ -1,4 +1,3 @@
-// 用户相关接口
 const express = require('express');
 var UsersRouter = express.Router();
 const { User } = require('../model/User');
@@ -9,12 +8,12 @@ const SECRET = 'wufan';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const userController = require('../controllers/UserController')
+
 // 获取用户信息
 UsersRouter.get('/', (req, res) => {
   console.log('req对象',res.query)
 })
 
-// 登录接口
 UsersRouter.post('/login', async (req, res) => {
   const user = await User.findOne({
     username: req.body.username
@@ -36,7 +35,7 @@ UsersRouter.post('/login', async (req, res) => {
           res.header("Authorization", token)  // token放在请求头中
           res.send({
             message: "登录成功",
-            user,  // 用户信息不一定要返回，里面包含密码的密文
+            user,  
           })
         } else {
           res.send({
@@ -48,7 +47,7 @@ UsersRouter.post('/login', async (req, res) => {
   }
 })
 
-// 一个中间件,用于验证token
+// 用于验证token的中间件
 const auth = async (req, res, next) => {
   try {
     console.log(req.headers.token)
@@ -57,7 +56,6 @@ const auth = async (req, res, next) => {
     req.user = await User.findById(id, { username: 1, avatar: 1, nickname: 1 });
     next();
   } catch (e) {
-    // next();
     console.error("UsersRouter token验证失败:", e.message);
     return res.status(401).send({ message: "token过期了~" });
   }
@@ -72,13 +70,10 @@ UsersRouter.get('/getUserInfo', auth, async (req, res) => {
   }
 })
 
-// 测试接口，用于上传头像
 UsersRouter.post('/upload/avatar', userController.upload)
 
-// 用于更新用户信息
 UsersRouter.post('/update', userController.update)
 
-// 注册接口
 UsersRouter.post('/register', userController.register)
 
 module.exports = UsersRouter

@@ -33,8 +33,6 @@ class UserController {
       await Travel.updateMany({userId: req.body.id}, {
           userInfo: {nickname: myUserInfo.nickname, avatar: myUserInfo.avatar}
       })
-
-
       res.send({ message: "更新成功" });
     } catch (error) {
       console.log(error)
