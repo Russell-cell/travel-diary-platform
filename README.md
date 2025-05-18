@@ -3,32 +3,32 @@
 
 ## 技术栈
 
-服务端 (Server)
+### 服务端 (Server)
 
-Node.js + Express：构建RESTful API
-MongoDB + Mongoose：数据存储和模型定义
-JWT：用户认证
-Multer：处理文件上传
-Bcrypt：密码加密
-Child Process：处理视频缩略图生成
+* Node.js + Express：构建RESTful API
+* MongoDB + Mongoose：数据存储和模型定义
+* JWT：用户认证
+* Multer：处理文件上传
+* Bcrypt：密码加密
+* Child Process：处理视频缩略图生成
 
-管理端 (Admin)
+### 管理端 (Admin)
 
-React：前端框架
-React Router：路由管理
-Redux + Redux Toolkit：状态管理
-Ant Design：UI组件库
-Axios：HTTP请求
-SCSS：样式管理
-Craco：自定义Create React App配置
+* React：前端框架
+* React Router：路由管理
+* Redux + Redux Toolkit：状态管理
+* Ant Design：UI组件库
+* Axios：HTTP请求
+* SCSS：样式管理
+* Craco：自定义Create React App配置
 
-移动端 (Mobile)
+### 移动端 (Mobile)
 
-React Native + Expo：跨平台移动应用开发
-React Navigation：导航管理
-Redux：状态管理
-React Native Paper：UI组件库
-React Native Gesture Handler：手势处理
+* React Native + Expo：跨平台移动应用开发
+* React Navigation：导航管理
+* Redux：状态管理
+* React Native Paper：UI组件库
+* React Native Gesture Handler：手势处理
 
 ## 后端项目启动
 
