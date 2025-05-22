@@ -92,7 +92,7 @@ const DetailScreen = ({ navigation, route }) => {
 
   const handleShare = () => {
     // 分享功能
-    const uri = `【${userInfo.nickname}】给您分享了一篇游记,快来看看吧~\n http://192.168.171.218:3000/public/share/index.html?id=${cardId}`;
+    const uri = `【${userInfo.nickname}】给您分享了一篇游记,快来看看吧~\n http://192.168.110.69:3000/public/share/index.html?id=${cardId}`;
     Share.share({
       message: uri,
     }, {
@@ -243,8 +243,8 @@ const DetailScreen = ({ navigation, route }) => {
   // 视频组件
   const VideoPlayer = ({ uri, thumbnail }) => {
     return (
-      <TouchableOpacity 
-        style={styles.videoContainer} 
+      <TouchableOpacity
+        style={styles.videoContainer}
         onPress={() => setIsVideoVisible(true)}
       >
         <Image source={{ uri: thumbnail || uri }} style={styles.videoThumbnail} />
@@ -253,7 +253,7 @@ const DetailScreen = ({ navigation, route }) => {
         </View>
         {isVideoVisible && (
           <View style={styles.fullScreenVideo}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.closeVideoButton}
               onPress={() => {
                 setIsVideoVisible(false);
@@ -278,10 +278,10 @@ const DetailScreen = ({ navigation, route }) => {
       </TouchableOpacity>
     );
   };
-    // 处理媒体项目，将视频和照片组合起来
+  // 处理媒体项目，将视频和照片组合起来
   const getMediaItems = () => {
     const mediaItems = [];
-    
+
     // 如果有视频，先添加视频
     if (travelDetail && travelDetail.videos && travelDetail.videos.length > 0) {
       travelDetail.videos.forEach((video, index) => {
@@ -293,7 +293,7 @@ const DetailScreen = ({ navigation, route }) => {
         });
       });
     }
-    
+
     // 然后添加照片
     if (travelDetail && travelDetail.photo && travelDetail.photo.length > 0) {
       travelDetail.photo.forEach((photo, index) => {
@@ -304,10 +304,10 @@ const DetailScreen = ({ navigation, route }) => {
         });
       });
     }
-    
+
     return mediaItems;
   };
-  
+
   // 渲染单个媒体项
   const renderMediaItem = (item, index) => {
     if (item.type === 'video') {
@@ -317,9 +317,9 @@ const DetailScreen = ({ navigation, route }) => {
             style={styles.image_contain}
             onPress={() => setPlayingVideo(item.uri)}
           >
-            <Image 
-              source={{ uri: item.thumbnail || item.uri }} 
-              style={styles.image} 
+            <Image
+              source={{ uri: item.thumbnail || item.uri }}
+              style={styles.image}
             />
             <View style={styles.videoPlayIcon}>
               <Ionicons name="play-circle" size={50} color="white" />
@@ -356,10 +356,10 @@ const DetailScreen = ({ navigation, route }) => {
         handleCancel={hideDialog}
         handleConfirm={() => cancelCollected(cardId)}
       />
-            {/* 全屏视频播放 */}
-            {playingVideo && (
+      {/* 全屏视频播放 */}
+      {playingVideo && (
         <View style={styles.fullScreenVideo}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.closeVideoButton}
             onPress={() => {
               setPlayingVideo(null);
@@ -395,14 +395,14 @@ const DetailScreen = ({ navigation, route }) => {
               >
                 {getMediaItems().map((item, index) => renderMediaItem(item, index))}
               </PagerView>
-              
+
               {/* 分页指示器 */}
               <View style={styles.paginationStyle}>
                 <Text style={{ color: 'white' }}>
                   <Text>{currentIndex + 1}</Text>/{getMediaItems().length}
                 </Text>
               </View>
-              
+
               {/* 图片查看器 */}
               <Modal visible={showImage} transparent={true}>
                 <ImageViewer
@@ -600,7 +600,7 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 12,
   },
-    // 添加视频相关样式
+  // 添加视频相关样式
   videoContainer: {
     flex: 1,
     position: 'relative',

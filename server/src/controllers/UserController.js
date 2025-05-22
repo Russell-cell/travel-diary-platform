@@ -54,7 +54,8 @@ class UserController {
   
       let avatarUrl = uploadRes && uploadRes.img_url
         ? uploadRes.img_url
-        : 'https://tnz8cosav4bj.ngrok.xiaomiqiu123.top/public/avatarUploads/default_avatar.png'; // 替换成你的默认头像地址
+        // : 'http://tnz8cosav4bj.ngrok.xiaomiqiu123.top/public/avatarUploads/default_avatar.png'; // 替换成你的默认头像地址
+        : 'http://192.168.110.69:3000/public/avatarUploads/default_avatar.png';
   
       let user = await User.create({
         username: req.body.username,

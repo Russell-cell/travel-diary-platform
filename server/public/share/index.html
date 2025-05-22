@@ -18,9 +18,10 @@
     const queryString = window.location.search; // 获取 URL 查询字符串
     const urlParams = new URLSearchParams(queryString);// 解析查询字符串
     const param = urlParams.get('id');// 获取参数值
-    const NGROK_URL = 'http://192.168.171.218:3000';
+    // const NGROK_URL = 'http://tnz8cosav4bj.ngrok.xiaomiqiu123.top';
+    const NGROK_URL = 'http://192.168.110.69:3000';
 
-    function App() {
+    function App () {
       const [travelInfo, setTravelInfo] = useState({});
       const [photoUri, setPhotoUri] = useState([])
       const swiper = new Swiper('.swiper', {

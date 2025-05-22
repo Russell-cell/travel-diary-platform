@@ -13,11 +13,6 @@ const items = [
     key: '/',
     icon: <UnorderedListOutlined />,
   }
-  // ,{
-  //   label: '数据面板',
-  //   key: 'home',
-  //   icon: <PieChartOutlined />,
-  // }
 ]
 
 const TravelLayout = () => {

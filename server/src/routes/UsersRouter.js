@@ -50,13 +50,10 @@ UsersRouter.post('/login', async (req, res) => {
 // 用于验证token的中间件
 const auth = async (req, res, next) => {
   try {
-    console.log(req.headers.token)
-    console.log("UsersRouter验证token:", req.headers.token ? "存在" : "不存在");
     const { id } = jwt.verify(req.headers.token, SECRET);  // 这个操作需要时间
     req.user = await User.findById(id, { username: 1, avatar: 1, nickname: 1 });
     next();
   } catch (e) {
-    console.error("UsersRouter token验证失败:", e.message);
     return res.status(401).send({ message: "token过期了~" });
   }
 }
